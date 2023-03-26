@@ -1,0 +1,17 @@
+name: build:afs-leftbin-oss-main:review
+on:
+  pull_request:
+    types: [ opened, synchronize ]
+
+jobs:
+  build:
+    #https://github.com/plantoncloud/gh-workflow-build-java/blob/main/.github/workflows/jar:build.yaml
+    uses: plantoncloud/gh-workflow-build-java/.github/workflows/jar:build.yaml@main
+    secrets:
+      PLANTON_CLOUD_SERVICE_CLIENT_ID: ${{ secrets.PLANTON_CLOUD_SERVICE_CLIENT_ID }}
+      PLANTON_CLOUD_SERVICE_CLIENT_SECRET: ${{ secrets.PLANTON_CLOUD_SERVICE_CLIENT_SECRET }}
+    with:
+      PLANTON_CLOUD_SERVICE_CLI_ENV: live
+      PLANTON_CLOUD_ARTIFACT_STORE_ID: afs-leftbin-oss-main
+      PLANTON_CLOUD_PRODUCT_ID: leftbin-oss
+      PLANTON_CLOUD_ARTIFACT_STORE_MAVEN_REPO_URL: artifactregistry://asia-south1-maven.pkg.dev/planton-shared-services-lo/afs-leftbin-oss-main-maven
