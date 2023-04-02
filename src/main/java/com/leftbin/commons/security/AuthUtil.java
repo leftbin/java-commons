@@ -31,7 +31,7 @@ public class AuthUtil {
 
     private static final String ENV_IDP_AUDIENCE = "IDP_AUDIENCE";
 
-    private static final String IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY = "https://planton.cloud/email";
+    private static final String ENV_IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY = "IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY";
 
     public static String getMicroserviceMachineAccountId() {
         Assert.notNull(microserviceIdentityTokenHolder, "microservice identity token holder can not be null");
@@ -43,7 +43,7 @@ public class AuthUtil {
         Assert.notNull(microserviceIdentityTokenHolder, "microservice identity token holder can not be null");
         var decodedJWT = JWT.decode(microserviceIdentityTokenHolder.getAccessToken());
         for (Map.Entry<String, Claim> entry : decodedJWT.getClaims().entrySet()) {
-            if (entry.getKey().equals(IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY)) {
+            if (entry.getKey().equals(System.getenv(ENV_IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY))) {
                 return entry.getValue().asString();
             }
         }
@@ -63,7 +63,7 @@ public class AuthUtil {
     public static String getEmail(Authentication auth) {
         var tokenHolder = (JwtAuthenticationToken) auth;
         for (Map.Entry<String, Object> entry : tokenHolder.getToken().getClaims().entrySet()) {
-            if (entry.getKey().equals(IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY)) {
+            if (entry.getKey().equals(System.getenv(ENV_IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY))) {
                 return entry.getValue().toString();
             }
         }
@@ -90,10 +90,11 @@ public class AuthUtil {
         EnvUtil.ensureEnvVar(ENV_IDP_URL);
         EnvUtil.ensureEnvVar(ENV_IDP_DOMAIN);
         EnvUtil.ensureEnvVar(ENV_IDP_AUDIENCE);
+        EnvUtil.ensureEnvVar(ENV_IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY);
         EnvUtil.ensureEnvVar(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_ID);
         EnvUtil.ensureEnvVar(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_SECRET);
         var userAuthApi = new AuthAPI(System.getenv(ENV_IDP_DOMAIN), System.getenv(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_ID), System.getenv(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_SECRET));
-        var tokenHolder = userAuthApi.requestToken(System.getenv(ENV_IDP_DOMAIN)).execute();
+        var tokenHolder = userAuthApi.requestToken(System.getenv(ENV_IDP_AUDIENCE)).execute();
         log.info("successfully fetched token from idp");
         return tokenHolder;
     }
