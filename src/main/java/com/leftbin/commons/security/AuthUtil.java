@@ -28,7 +28,8 @@ public class AuthUtil {
     private static final String ENV_IDP_DOMAIN = "IDP_DOMAIN";
     private static final String ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_ID = "MICROSERVICE_IDENTITY_IDP_CLIENT_ID";
     private static final String ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_SECRET = "MICROSERVICE_IDENTITY_IDP_CLIENT_SECRET";
-    private static final String IDP_API_AUDIENCE = "https://api.planton.cloud/";
+
+    private static final String ENV_IDP_AUDIENCE = "IDP_AUDIENCE";
 
     private static final String IDP_TOKEN_CUSTOM_CLAIM_EMAIL_KEY = "https://planton.cloud/email";
 
@@ -88,10 +89,11 @@ public class AuthUtil {
         EnvUtil.ensureEnvVar(ENV_ENV);
         EnvUtil.ensureEnvVar(ENV_IDP_URL);
         EnvUtil.ensureEnvVar(ENV_IDP_DOMAIN);
+        EnvUtil.ensureEnvVar(ENV_IDP_AUDIENCE);
         EnvUtil.ensureEnvVar(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_ID);
         EnvUtil.ensureEnvVar(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_SECRET);
         var userAuthApi = new AuthAPI(System.getenv(ENV_IDP_DOMAIN), System.getenv(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_ID), System.getenv(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_SECRET));
-        var tokenHolder = userAuthApi.requestToken(IDP_API_AUDIENCE).execute();
+        var tokenHolder = userAuthApi.requestToken(System.getenv(ENV_IDP_DOMAIN)).execute();
         log.info("successfully fetched token from idp");
         return tokenHolder;
     }

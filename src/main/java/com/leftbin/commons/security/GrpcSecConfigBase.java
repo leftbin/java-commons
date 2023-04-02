@@ -35,16 +35,18 @@ public class GrpcSecConfigBase extends GrpcSecurityConfigurerAdapter {
 
     private static final String ENV_IDP_URL = "IDP_URL";
     private static final String ENV_ENV = "ENV";
-    private static final String IDP_AUDIENCE = "https://api.planton.cloud/";
+    private static final String ENV_IDP_AUDIENCE = "IDP_AUDIENCE";
 
     private final GRpcServicesRegistry gRpcServicesRegistry;
 
     @Bean
     JwtDecoder jwtDecoder() throws EnvVarMissingException {
         EnvUtil.ensureEnvVar(ENV_ENV);
+        EnvUtil.ensureEnvVar(ENV_IDP_AUDIENCE);
+        EnvUtil.ensureEnvVar(ENV_IDP_URL);
         var jwtDecoder = (NimbusJwtDecoder)
                 JwtDecoders.fromOidcIssuerLocation(System.getenv(ENV_IDP_URL));
-        var audienceValidator = new AudienceValidator(Collections.singletonList(IDP_AUDIENCE));
+        var audienceValidator = new AudienceValidator(Collections.singletonList(System.getenv(ENV_IDP_URL)));
         var defaultWithOutIssuer = JwtValidators.createDefault();
         var withAudience = new DelegatingOAuth2TokenValidator<>(defaultWithOutIssuer, audienceValidator);
 

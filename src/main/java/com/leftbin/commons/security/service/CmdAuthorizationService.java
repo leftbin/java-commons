@@ -8,6 +8,7 @@ import com.leftbin.commons.security.fga.model.OpenFgaTupleKeyWriteModel;
 import com.leftbin.commons.security.fga.service.query.FgaStoreTupleCheckQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
+@Lazy
 @RequiredArgsConstructor
 public class CmdAuthorizationService {
     private final FgaStoreTupleCheckQuery fgaStoreTupleCheckQuery;
