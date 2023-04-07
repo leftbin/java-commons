@@ -46,7 +46,7 @@ public class GrpcSecConfigBase extends GrpcSecurityConfigurerAdapter {
         EnvUtil.ensureEnvVar(ENV_IDP_URL);
         var jwtDecoder = (NimbusJwtDecoder)
                 JwtDecoders.fromOidcIssuerLocation(System.getenv(ENV_IDP_URL));
-        var audienceValidator = new AudienceValidator(Collections.singletonList(System.getenv(ENV_IDP_URL)));
+        var audienceValidator = new AudienceValidator(Collections.singletonList(System.getenv(ENV_IDP_AUDIENCE)));
         var defaultWithOutIssuer = JwtValidators.createDefault();
         var withAudience = new DelegatingOAuth2TokenValidator<>(defaultWithOutIssuer, audienceValidator);
 
