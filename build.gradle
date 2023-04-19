@@ -52,7 +52,7 @@ dependencies {
     implementation("com.auth0:java-jwt:4.0.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.4")
 
-    implementation("com.leftbin.commons:proto-commons:v0.0.006")
+    implementation("com.leftbin.lib:proto-commons:v0.0.009")
 
     implementation('org.flywaydb:flyway-core:8.5.12')
 
