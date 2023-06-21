@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.leftbin.commons:proto-commons:local'
+    implementation 'com.leftbin.commons:proto-commons:v0.0.2'
 
     annotationProcessor 'no.entur.mapstruct.spi:protobuf-spi-impl:1.43'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
