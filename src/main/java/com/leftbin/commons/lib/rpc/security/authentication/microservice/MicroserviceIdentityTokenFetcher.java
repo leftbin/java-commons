@@ -24,8 +24,8 @@ public class MicroserviceIdentityTokenFetcher {
      */
     public TokenHolder fetch() throws Auth0Exception {
         var userAuthApi = AuthAPI.newBuilder(authenticationConfig.getIdpDomain(),
-                authenticationConfig.getMicroservice().getClientId()
-            ).withClientSecret(authenticationConfig.getMicroservice().getClientSecret())
+                authenticationConfig.getMicroserviceIdentity().getClientId()
+            ).withClientSecret(authenticationConfig.getMicroserviceIdentity().getClientSecret())
             .build();
         var tokenHolder = userAuthApi.requestToken(authenticationConfig.getApiAudience()).execute();
         return tokenHolder.getBody();
