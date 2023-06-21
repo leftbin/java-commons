@@ -16,14 +16,15 @@ public class AuthenticationConfig {
     private String idpUrl;
     private String apiAudience;
     private String tokenCustomClaimsKey;
-    private MicroserviceAuthentication microservice;
+    private MicroserviceIdentityAuthentication microserviceIdentity;
 
     /**
      * Configuration class to hold the properties for microservice authentication.
      * It is nested within AuthenticationConfig to match the structure of the properties.
      */
     @Data
-    public static class MicroserviceAuthentication {
+    public static class MicroserviceIdentityAuthentication {
+        private boolean enabled;
         private String clientId;
         private String clientSecret;
     }

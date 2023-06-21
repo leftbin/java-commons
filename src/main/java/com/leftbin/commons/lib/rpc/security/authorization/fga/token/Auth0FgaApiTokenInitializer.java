@@ -1,6 +1,7 @@
 package com.leftbin.commons.lib.rpc.security.authorization.fga.token;
 
 import com.auth0.exception.Auth0Exception;
+import com.leftbin.commons.lib.rpc.security.authorization.config.AuthorizationConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
 public class Auth0FgaApiTokenInitializer implements ApplicationListener<ApplicationReadyEvent> {
     private final Auth0FgaApiTokenHolder auth0FgaApiTokenHolder;
     private final Auth0FgaApiTokenFetcher auth0FgaApiTokenFetcher;
+    private final AuthorizationConfig authorizationConfig;
 
     /**
      * Handles the ApplicationReadyEvent. It initializes the Auth0 FGA API token when the application is ready.
@@ -30,6 +32,9 @@ public class Auth0FgaApiTokenInitializer implements ApplicationListener<Applicat
     @Override
     public void onApplicationEvent(@NotNull ApplicationReadyEvent event) {
         try {
+            if(!authorizationConfig.isEnabled()) {
+                return;
+            }
             log.info("initializing auth0-fga api authentication token");
             auth0FgaApiTokenHolder.setTokenHolder( auth0FgaApiTokenFetcher.fetch());
             log.info("successfully initialized auth0-fga api authentication token");

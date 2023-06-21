@@ -1,7 +1,8 @@
 package com.leftbin.commons.lib.rpc.security.authentication.microservice;
 
-import com.leftbin.commons.lib.rpc.security.authentication.token.AuthenticationTokenExpiryVerifier;
 import com.auth0.exception.Auth0Exception;
+import com.leftbin.commons.lib.rpc.security.authentication.config.AuthenticationConfig;
+import com.leftbin.commons.lib.rpc.security.authentication.token.AuthenticationTokenExpiryVerifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,6 +22,7 @@ public class MicroserviceIdentityTokenRotatorCron {
     private final AuthenticationTokenExpiryVerifier authenticationTokenExpiryVerifier;
     private final MicroserviceIdentityHolder microserviceIdentityHolder;
     private final MicroserviceIdentityTokenFetcher microserviceIdentityTokenFetcher;
+    private final AuthenticationConfig authenticationConfig;
 
     /**
      * The scheduled task that checks if the microservice identity token is about to expire and fetches a new token if it is.
@@ -30,6 +32,9 @@ public class MicroserviceIdentityTokenRotatorCron {
      */
     @Scheduled(initialDelay = 2, fixedRate = 10, timeUnit = TimeUnit.MINUTES)
     public void scheduleFixedDelayTask() throws Auth0Exception {
+        if (!authenticationConfig.getMicroserviceIdentity().isEnabled()) {
+            return;
+        }
         log.debug("checking to rotate microservice identity token");
         var isExpiring = authenticationTokenExpiryVerifier.verify(microserviceIdentityHolder.getAccessToken(), TOKEN_EXPIRY_MINUTES_LIMIT);
         if (!isExpiring) {

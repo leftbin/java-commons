@@ -2,6 +2,7 @@ package com.leftbin.commons.lib.rpc.security.authorization.fga.token;
 
 import com.leftbin.commons.lib.rpc.security.authentication.token.AuthenticationTokenExpiryVerifier;
 import com.auth0.exception.Auth0Exception;
+import com.leftbin.commons.lib.rpc.security.authorization.config.AuthorizationConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +26,7 @@ public class Auth0FgaApiTokenRotatorCron {
     private final Auth0FgaApiTokenHolder auth0FgaApiTokenHolder;
     private final AuthenticationTokenExpiryVerifier authenticationTokenExpiryVerifier;
     private final Auth0FgaApiTokenFetcher auth0FgaApiTokenFetcher;
+    private final AuthorizationConfig authorizationConfig;
 
     /**
      * This method is a scheduled cron job that runs every 10 minutes after an initial delay of 2 minutes.
@@ -35,6 +37,9 @@ public class Auth0FgaApiTokenRotatorCron {
      */
     @Scheduled(initialDelay = 2, fixedRate = 10, timeUnit = TimeUnit.MINUTES)
     public void checkAndRotateFgaStoreToken() throws Auth0Exception {
+        if(!authorizationConfig.isEnabled()) {
+            return;
+        }
         log.debug("running cron to check and rotate fga token");
         var isExpiring = authenticationTokenExpiryVerifier.verify(auth0FgaApiTokenHolder.getAccessToken(),
             TOKEN_EXPIRY_MINUTES_LIMIT);
