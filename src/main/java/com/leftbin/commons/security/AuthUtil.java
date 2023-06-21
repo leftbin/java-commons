@@ -96,7 +96,7 @@ public class AuthUtil {
         var userAuthApi = new AuthAPI(System.getenv(ENV_IDP_DOMAIN), System.getenv(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_ID), System.getenv(ENV_MICROSERVICE_IDENTITY_IDP_CLIENT_SECRET));
         var tokenHolder = userAuthApi.requestToken(System.getenv(ENV_IDP_AUDIENCE)).execute();
         log.info("successfully fetched token from idp");
-        return tokenHolder;
+        return tokenHolder.getBody();
     }
 
     // attach returns the stub provided in the input after attaching the cached service identity token as the

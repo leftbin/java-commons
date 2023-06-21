@@ -28,8 +28,10 @@ public class Auth0FgaStoreAuth {
 
     private TokenHolder exchangeCredentials() throws Auth0Exception {
         log.info("fetching token from auth0 fga");
-        var userAuthApi = new AuthAPI("fga.us.auth0.com", auth0FgaConfig.getStoreClientId(), auth0FgaConfig.getStoreClientSecret());
-        return userAuthApi.requestToken(auth0FgaConfig.getApiAudience()).execute();
+        var userAuthApi = AuthAPI.newBuilder("fga.us.auth0.com", auth0FgaConfig.getStoreClientId())
+                .withClientSecret(auth0FgaConfig.getStoreClientSecret())
+                .build();
+        return userAuthApi.requestToken(auth0FgaConfig.getApiAudience()).execute().getBody();
     }
 
     //start cron after 2 minutes and then run it every 10 minutes
