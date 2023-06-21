@@ -1,4 +1,4 @@
-package com.leftbin.commons.lib.db.service;
+package com.leftbin.commons.lib.database.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

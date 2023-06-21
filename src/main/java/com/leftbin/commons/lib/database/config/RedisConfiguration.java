@@ -1,4 +1,4 @@
-package com.leftbin.commons.lib.db.config;
+package com.leftbin.commons.lib.database.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

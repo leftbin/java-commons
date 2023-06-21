@@ -1,4 +1,4 @@
-package com.leftbin.commons.lib.db.flyway;
+package com.leftbin.commons.lib.database.flyway;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
